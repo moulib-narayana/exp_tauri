@@ -9,12 +9,7 @@
       <p class="cyber-subtitle">Welcome to the digital realm</p>
     </div>
 
-    <div class="navigation">
-      <NuxtLink to="/" class="nav-btn cyber-btn">Home</NuxtLink>
-      <NuxtLink to="/page1" class="nav-btn cyber-btn">Page 1</NuxtLink>
-      <NuxtLink to="/page2" class="nav-btn cyber-btn">Page 2</NuxtLink>
-      <NuxtLink to="/page4" class="nav-btn cyber-btn">Page 4</NuxtLink>
-    </div>
+
 
     <div class="hologram-grid">
       <div v-for="i in 35" :key="i" class="hologram-card" :class="`hologram-${i % 7}`">
@@ -141,53 +136,7 @@
   animation: subtitle-glitch 3s ease-in-out infinite;
 }
 
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  z-index: 10;
-  position: relative;
-}
 
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(0, 255, 255, 0.1);
-  color: #00ffff;
-  text-decoration: none;
-  border-radius: 5px;
-  border: 2px solid #00ffff;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
-}
-
-.nav-btn:hover::before {
-  left: 100%;
-}
-
-.nav-btn:hover {
-  background: rgba(0, 255, 255, 0.2);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 255, 255, 0.4);
-  text-shadow: 0 0 10px #00ffff;
-}
 
 .hologram-grid {
   display: grid;

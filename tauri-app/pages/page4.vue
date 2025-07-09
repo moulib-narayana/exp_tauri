@@ -12,12 +12,7 @@
       <p class="candy-subtitle">A world of sugary delights!</p>
     </div>
 
-    <div class="navigation">
-      <NuxtLink to="/" class="nav-btn candy-btn">Home</NuxtLink>
-      <NuxtLink to="/page1" class="nav-btn candy-btn">Page 1</NuxtLink>
-      <NuxtLink to="/page2" class="nav-btn candy-btn">Page 2</NuxtLink>
-      <NuxtLink to="/page3" class="nav-btn candy-btn">Page 3</NuxtLink>
-    </div>
+
 
     <div class="sweet-grid">
       <div v-for="i in 40" :key="i" class="sweet-card" :class="`sweet-${i % 8}`">
@@ -167,50 +162,7 @@
   animation: bounce-text 2s ease-in-out infinite;
 }
 
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  z-index: 10;
-  position: relative;
-}
 
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.3);
-  color: #e84393;
-  text-decoration: none;
-  border-radius: 25px;
-  border: 2px solid #e84393;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  font-weight: bold;
-}
-
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.6s;
-}
-
-.nav-btn:hover::before {
-  left: 100%;
-}
-
-.nav-btn:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 30px rgba(232, 67, 147, 0.4);
-}
 
 .sweet-grid {
   display: grid;

@@ -5,12 +5,7 @@
       <p class="subtitle fade-in">Where everything moves and dances!</p>
     </div>
 
-    <div class="navigation">
-      <NuxtLink to="/page1" class="nav-btn bounce">Page 1</NuxtLink>
-      <NuxtLink to="/page2" class="nav-btn bounce">Page 2</NuxtLink>
-      <NuxtLink to="/page3" class="nav-btn bounce">Page 3</NuxtLink>
-      <NuxtLink to="/page4" class="nav-btn bounce">Page 4</NuxtLink>
-    </div>
+
 
     <div class="cards-grid">
       <div v-for="i in 20" :key="i" class="card" :class="`card-${i % 4}`">
@@ -57,30 +52,7 @@
   color: rgba(255,255,255,0.9);
 }
 
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
 
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(255,255,255,0.2);
-  color: white;
-  text-decoration: none;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.3);
-  transition: all 0.3s ease;
-}
-
-.nav-btn:hover {
-  background: rgba(255,255,255,0.3);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
 
 .cards-grid {
   display: grid;

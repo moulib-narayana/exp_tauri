@@ -9,12 +9,7 @@
       <p class="cosmic-subtitle">Journey through the stars</p>
     </div>
 
-    <div class="navigation">
-      <NuxtLink to="/" class="nav-btn glow">Home</NuxtLink>
-      <NuxtLink to="/page2" class="nav-btn glow">Page 2</NuxtLink>
-      <NuxtLink to="/page3" class="nav-btn glow">Page 3</NuxtLink>
-      <NuxtLink to="/page4" class="nav-btn glow">Page 4</NuxtLink>
-    </div>
+
 
     <div class="cards-container">
       <div v-for="i in 25" :key="i" class="space-card" :class="`space-card-${i % 5}`">
@@ -101,48 +96,7 @@
   animation: fade-pulse 2s ease-in-out infinite;
 }
 
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  z-index: 10;
-  position: relative;
-}
 
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(0, 255, 255, 0.1);
-  color: #00ffff;
-  text-decoration: none;
-  border-radius: 25px;
-  border: 1px solid #00ffff;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
-}
-
-.nav-btn:hover::before {
-  left: 100%;
-}
-
-.nav-btn:hover {
-  background: rgba(0, 255, 255, 0.2);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
-}
 
 .cards-container {
   display: grid;

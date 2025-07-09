@@ -12,12 +12,7 @@
       <p class="nature-subtitle">Where magic meets nature</p>
     </div>
 
-    <div class="navigation">
-      <NuxtLink to="/" class="nav-btn forest-btn">Home</NuxtLink>
-      <NuxtLink to="/page1" class="nav-btn forest-btn">Page 1</NuxtLink>
-      <NuxtLink to="/page3" class="nav-btn forest-btn">Page 3</NuxtLink>
-      <NuxtLink to="/page4" class="nav-btn forest-btn">Page 4</NuxtLink>
-    </div>
+
 
     <div class="cards-masonry">
       <div v-for="i in 30" :key="i" class="nature-card" :class="`nature-card-${i % 6}`">
@@ -149,49 +144,7 @@
   animation: subtitle-wave 3s ease-in-out infinite;
 }
 
-.navigation {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  z-index: 10;
-  position: relative;
-}
 
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(34, 139, 34, 0.3);
-  color: #90ee90;
-  text-decoration: none;
-  border-radius: 25px;
-  border: 2px solid #32cd32;
-  transition: all 0.4s ease;
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-}
-
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(144, 238, 144, 0.3), transparent);
-  transition: left 0.6s;
-}
-
-.nav-btn:hover::before {
-  left: 100%;
-}
-
-.nav-btn:hover {
-  background: rgba(34, 139, 34, 0.5);
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 30px rgba(50, 205, 50, 0.4);
-}
 
 .cards-masonry {
   display: grid;

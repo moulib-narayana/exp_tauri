@@ -1,6 +1,6 @@
 <template>
     <main>
-        <h1>This is default layout</h1>
+        <SideMenu />
         <slot />
     </main>
 </template>
