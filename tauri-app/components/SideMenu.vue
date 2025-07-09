@@ -22,7 +22,11 @@
     <!-- Side Menu -->
     <div 
       class="side-menu"
-      :class="{ 'open': isOpen }"
+      :class="{ 'open': isOpen, 'dragging': isDragging }"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
+      @touchcancel="handleTouchEnd"
     >
       <div class="menu-header">
         <h2 class="menu-title">Navigation</h2>
@@ -98,6 +102,11 @@
 
 <script setup>
 const isOpen = ref(false)
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const touchEndX = ref(0)
+const touchEndY = ref(0)
+const isDragging = ref(false)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -105,6 +114,40 @@ const toggleMenu = () => {
 
 const closeMenu = () => {
   isOpen.value = false
+}
+
+// Touch gesture handlers
+const handleTouchStart = (e) => {
+  if (!isOpen.value) return
+  
+  e.preventDefault()
+  touchStartX.value = e.touches[0].clientX
+  touchStartY.value = e.touches[0].clientY
+  isDragging.value = true
+}
+
+const handleTouchMove = (e) => {
+  if (!isOpen.value || !isDragging.value) return
+  
+  e.preventDefault()
+  touchEndX.value = e.touches[0].clientX
+  touchEndY.value = e.touches[0].clientY
+}
+
+const handleTouchEnd = (e) => {
+  if (!isOpen.value || !isDragging.value) return
+  
+  e.preventDefault()
+  isDragging.value = false
+  
+  const deltaX = touchStartX.value - touchEndX.value
+  const deltaY = Math.abs(touchStartY.value - touchEndY.value)
+  
+  // Check if it's a horizontal swipe (more horizontal than vertical)
+  if (Math.abs(deltaX) > deltaY && deltaX > 50) {
+    // Swipe from right to left (close gesture)
+    closeMenu()
+  }
 }
 
 // Close menu on escape key
@@ -115,11 +158,32 @@ onMounted(() => {
     }
   }
   
+  const handlePopState = () => {
+    if (isOpen.value) {
+      closeMenu()
+    }
+  }
+  
   document.addEventListener('keydown', handleEscape)
+  window.addEventListener('popstate', handlePopState)
   
   onUnmounted(() => {
     document.removeEventListener('keydown', handleEscape)
+    window.removeEventListener('popstate', handlePopState)
   })
+})
+
+// Watch for menu state changes to manage browser history
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    // Push a new history entry when menu opens
+    history.pushState({ menuOpen: true }, '', window.location.href)
+  } else {
+    // Remove the history entry when menu closes
+    if (history.state?.menuOpen) {
+      history.back()
+    }
+  }
 })
 </script>
 
@@ -206,10 +270,17 @@ onMounted(() => {
   z-index: 1000;
   overflow-y: auto;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .side-menu.open {
   right: 0;
+}
+
+.side-menu.dragging {
+  transition: none;
+  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Menu Header */

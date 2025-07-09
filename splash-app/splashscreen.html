@@ -6,10 +6,56 @@
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tauri App</title>
+    <style>
+        .animated-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: boxAnimation 2s ease-out forwards;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes boxAnimation {
+            0% {
+                bottom: -100px;
+                transform: translateX(-50%) scale(1);
+            }
+
+            40% {
+                bottom: 50%;
+                transform: translateX(-50%) scale(1);
+            }
+
+            70% {
+                bottom: 50%;
+                transform: translateX(-50%) scale(1.5);
+            }
+
+            100% {
+                bottom: 50%;
+                transform: translateX(-50%) scale(1.2);
+            }
+        }
+
+        .container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
+        <div class="animated-box"></div>
         <h1>Tauri used Splash!</h1>
         <div class="row">
             <h5>It was super effective!</h5>
