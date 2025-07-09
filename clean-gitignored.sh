@@ -18,8 +18,8 @@ echo "Removing .nuxt directories..."
 find . -name ".nuxt" -type d -exec rm -rf {} + 2>/dev/null || true
 
 # Remove VS Code workspace settings
-echo "Removing .vscode directories..."
-find . -name ".vscode" -type d -exec rm -rf {} + 2>/dev/null || true
+# echo "Removing .vscode directories..."
+# find . -name ".vscode" -type d -exec rm -rf {} + 2>/dev/null || true
 
 # Remove Rust build artifacts
 echo "Removing Rust target directories..."
