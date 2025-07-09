@@ -81,6 +81,16 @@
           <span class="menu-icon">⭐</span>
           <span class="menu-text">Page 4</span>
         </NuxtLink>
+
+        <NuxtLink 
+          to="/transitions-demo" 
+          @click="closeMenu"
+          class="menu-item"
+          active-class="active"
+        >
+          <span class="menu-icon">✨</span>
+          <span class="menu-text">Transitions Demo</span>
+        </NuxtLink>
       </nav>
     </div>
   </div>

@@ -11,6 +11,23 @@ export default defineNuxtConfig({
         host: 'localhost'
     },
 
+    // Page transitions configuration
+    app: {
+        pageTransition: {
+            name: 'page',
+            mode: 'out-in'
+        },
+        layoutTransition: {
+            name: 'layout',
+            mode: 'out-in'
+        }
+    },
+
+    // CSS for page transitions
+    css: [
+        '~/assets/transitions.css'
+    ],
+
     // Build configuration
     // build: {
     //     // Ensure compatibility with Tauri
@@ -42,11 +59,6 @@ export default defineNuxtConfig({
     // // Modules
     // modules: [
     //     // Add any Nuxt modules you need here
-    // ],
-
-    // // CSS
-    // css: [
-    //     // Global CSS files
     // ],
 
     // // Runtime config
