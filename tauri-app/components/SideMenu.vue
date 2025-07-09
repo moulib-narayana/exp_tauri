@@ -22,11 +22,7 @@
     <!-- Side Menu -->
     <div 
       class="side-menu"
-      :class="{ 'open': isOpen, 'dragging': isDragging }"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
-      @touchcancel="handleTouchEnd"
+      :class="{ 'open': isOpen }"
     >
       <div class="menu-header">
         <h2 class="menu-title">Navigation</h2>
@@ -38,7 +34,7 @@
       <nav class="menu-nav">
         <NuxtLink 
           to="/" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -48,7 +44,7 @@
 
         <NuxtLink 
           to="/page1" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -58,7 +54,7 @@
 
         <NuxtLink 
           to="/page2" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -68,7 +64,7 @@
 
         <NuxtLink 
           to="/page3" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -78,7 +74,7 @@
 
         <NuxtLink 
           to="/page4" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -88,7 +84,7 @@
 
         <NuxtLink 
           to="/transitions-demo" 
-          @click="closeMenu"
+          @click="handleMenuClick"
           class="menu-item"
           active-class="active"
         >
@@ -102,11 +98,6 @@
 
 <script setup>
 const isOpen = ref(false)
-const touchStartX = ref(0)
-const touchStartY = ref(0)
-const touchEndX = ref(0)
-const touchEndY = ref(0)
-const isDragging = ref(false)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -116,38 +107,11 @@ const closeMenu = () => {
   isOpen.value = false
 }
 
-// Touch gesture handlers
-const handleTouchStart = (e) => {
-  if (!isOpen.value) return
-  
-  e.preventDefault()
-  touchStartX.value = e.touches[0].clientX
-  touchStartY.value = e.touches[0].clientY
-  isDragging.value = true
-}
-
-const handleTouchMove = (e) => {
-  if (!isOpen.value || !isDragging.value) return
-  
-  e.preventDefault()
-  touchEndX.value = e.touches[0].clientX
-  touchEndY.value = e.touches[0].clientY
-}
-
-const handleTouchEnd = (e) => {
-  if (!isOpen.value || !isDragging.value) return
-  
-  e.preventDefault()
-  isDragging.value = false
-  
-  const deltaX = touchStartX.value - touchEndX.value
-  const deltaY = Math.abs(touchStartY.value - touchEndY.value)
-  
-  // Check if it's a horizontal swipe (more horizontal than vertical)
-  if (Math.abs(deltaX) > deltaY && deltaX > 50) {
-    // Swipe from right to left (close gesture)
+const handleMenuClick = () => {
+  // Close menu after a small delay to ensure navigation happens first
+  setTimeout(() => {
     closeMenu()
-  }
+  }, 100)
 }
 
 // Close menu on escape key
@@ -270,17 +234,10 @@ watch(isOpen, (newValue) => {
   z-index: 1000;
   overflow-y: auto;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
-  touch-action: pan-y;
-  user-select: none;
 }
 
 .side-menu.open {
   right: 0;
-}
-
-.side-menu.dragging {
-  transition: none;
-  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Menu Header */
