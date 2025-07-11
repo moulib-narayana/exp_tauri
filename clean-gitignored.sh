@@ -73,3 +73,10 @@ echo ""
 echo "Note: If you need to restore the development environment:"
 echo "  - Run 'cd tauri-app && npm install' to reinstall dependencies"
 echo "  - Build artifacts will be regenerated when you build the project" 
+
+# Restore development environment
+echo "Restoring development environment..."
+nvm use
+yarn install
+
+echo "✅ Development environment restored!"
