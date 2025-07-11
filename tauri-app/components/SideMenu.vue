@@ -16,13 +16,20 @@
     <div 
       v-if="isOpen" 
       @click="closeMenu" 
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
       class="menu-overlay"
     ></div>
 
     <!-- Side Menu -->
     <div 
       class="side-menu"
-      :class="{ 'open': isOpen }"
+      :class="{ 'open': isOpen, 'dragging': isDragging }"
+      :style="dragStyle"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
     >
       <div class="menu-header">
         <h2 class="menu-title">Navigation</h2>
@@ -98,6 +105,26 @@
 
 <script setup>
 const isOpen = ref(false)
+const isDragging = ref(false)
+const dragStartX = ref(0)
+const dragStartY = ref(0)
+const dragCurrentX = ref(0)
+const dragDistance = ref(0)
+const menuWidth = 300 // Should match CSS width
+
+// Drag threshold for closing (percentage of menu width)
+const CLOSE_THRESHOLD = 0.3
+const MIN_DRAG_DISTANCE = 50
+
+const dragStyle = computed(() => {
+  if (!isDragging.value) return {}
+  
+  const translateX = Math.max(0, dragDistance.value)
+  return {
+    transform: `translateX(${translateX}px)`,
+    transition: 'none'
+  }
+})
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
@@ -105,6 +132,7 @@ const toggleMenu = () => {
 
 const closeMenu = () => {
   isOpen.value = false
+  resetDrag()
 }
 
 const handleMenuClick = () => {
@@ -112,6 +140,83 @@ const handleMenuClick = () => {
   setTimeout(() => {
     closeMenu()
   }, 100)
+}
+
+const resetDrag = () => {
+  isDragging.value = false
+  dragStartX.value = 0
+  dragStartY.value = 0
+  dragCurrentX.value = 0
+  dragDistance.value = 0
+}
+
+const handleTouchStart = (event) => {
+  if (!isOpen.value) return
+  
+  const touch = event.touches[0]
+  const touchX = touch.clientX
+  const touchY = touch.clientY
+  
+  // Only start drag if touch is within the left edge area of the menu
+  const menuElement = event.target.closest('.side-menu')
+  if (menuElement) {
+    const menuRect = menuElement.getBoundingClientRect()
+    const edgeWidth = 50 // Draggable edge width
+    
+    if (touchX >= menuRect.left && touchX <= menuRect.left + edgeWidth) {
+      isDragging.value = true
+      dragStartX.value = touchX
+      dragStartY.value = touchY
+      dragCurrentX.value = touchX
+      dragDistance.value = 0
+      
+      // Prevent default to avoid scrolling
+      event.preventDefault()
+    }
+  }
+}
+
+const handleTouchMove = (event) => {
+  if (!isDragging.value) return
+  
+  const touch = event.touches[0]
+  const touchX = touch.clientX
+  const touchY = touch.clientY
+  
+  // Calculate horizontal and vertical distance
+  const deltaX = touchX - dragStartX.value
+  const deltaY = Math.abs(touchY - dragStartY.value)
+  
+  // Only allow horizontal drag if vertical movement is minimal
+  if (deltaY < 30) {
+    // Only allow right-to-left drag (positive deltaX)
+    if (deltaX > 0) {
+      dragDistance.value = Math.min(deltaX, menuWidth)
+      dragCurrentX.value = touchX
+    }
+  }
+  
+  // Prevent default to avoid scrolling
+  event.preventDefault()
+}
+
+const handleTouchEnd = (event) => {
+  if (!isDragging.value) return
+  
+  const deltaX = dragCurrentX.value - dragStartX.value
+  
+  // Check if drag distance meets threshold for closing
+  if (deltaX > menuWidth * CLOSE_THRESHOLD || deltaX > MIN_DRAG_DISTANCE) {
+    closeMenu()
+  } else {
+    // Reset to original position
+    isDragging.value = false
+    setTimeout(() => {
+      resetDrag()
+    }, 300) // Allow time for animation
+  }
+  
+  resetDrag()
 }
 
 // Close menu on escape key
@@ -218,6 +323,7 @@ watch(isOpen, (newValue) => {
   backdrop-filter: blur(5px);
   z-index: 999;
   animation: fadeIn 0.3s ease;
+  touch-action: pan-y; /* Allow vertical scrolling on overlay */
 }
 
 /* Side Menu */
@@ -230,14 +336,19 @@ watch(isOpen, (newValue) => {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
-  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
   z-index: 1000;
   overflow-y: auto;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+  touch-action: pan-y; /* Allow vertical scrolling on menu content */
 }
 
 .side-menu.open {
   right: 0;
+}
+
+.side-menu.dragging {
+  transition: none; /* Disable transition during drag */
 }
 
 /* Menu Header */
