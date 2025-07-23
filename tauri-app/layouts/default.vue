@@ -15,6 +15,7 @@
 import { exists, BaseDirectory } from '@tauri-apps/plugin-fs';
 import { invoke } from '@tauri-apps/api/core';
 import { onMounted } from 'vue';
+import { platform } from '@tauri-apps/plugin-os';
 // when using `"withGlobalTauri": true`, you may use
 // const { exists, BaseDirectory } = window.__TAURI__.fs;
 const fileContent = ref();
@@ -26,6 +27,11 @@ onMounted(async () => {
 
     const filePath = "/Users/bmouli/Downloads/dev.md"; // Change to your file path
 
+    // when using `"withGlobalTauri": true`, you may use
+// const { platform } = window.__TAURI__.os;
+const currentPlatform = platform();
+console.log(currentPlatform);
+// Prints "windows" to the console
 
 invoke('read_file_if_exists', { path: filePath })
   .then((content) => {
