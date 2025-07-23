@@ -1,5 +1,16 @@
 <template>
   <div class="page-container">
+    <!-- File Read/Write Section -->
+    <div class="file-ops" style="margin-bottom: 2rem; text-align: center;">
+      <input v-model="inputText" placeholder="Enter text to write to file" style="padding: 0.5rem; width: 250px; border-radius: 5px; border: 1px solid #ccc;" />
+      <button @click="()=>writeToFile()" style="margin-left: 0.5rem; padding: 0.5rem 1rem; border-radius: 5px; background: #667eea; color: white; border: none;">Submit</button>
+      <button @click="()=>readFile()" style="margin-left: 0.5rem; padding: 0.5rem 1rem; border-radius: 5px; background: #764ba2; color: white; border: none;">Read File</button>
+      <div v-if="fileContent !== null" style="margin-top: 1rem; background: #fff3; color: #222; padding: 1rem; border-radius: 8px; max-width: 500px; margin-left: auto; margin-right: auto;">
+        <strong>File Content:</strong>
+        <pre style="white-space: pre-wrap; word-break: break-all;">{{ fileContent }}</pre>
+      </div>
+      <div v-if="errorMsg" style="color: #ff6b6b; margin-top: 0.5rem;">{{ errorMsg }}</div>
+    </div>
     <div class="header">
       <h1 class="title animate-text">Welcome to Animation World</h1>
       <p class="subtitle fade-in">Where everything moves and dances!</p>
@@ -25,6 +36,44 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import { invoke } from '@tauri-apps/api/core'
+import { writeTextFile, BaseDirectory } from '@tauri-apps/plugin-fs';
+
+const inputText = ref('')
+const fileContent = ref(null)
+const errorMsg = ref('')
+const filePath = '/Users/bmouli/Downloads/tauri-demo.txt' // Change as needed
+
+async function writeToFile() {
+  errorMsg.value = ''
+  try {
+    await writeTextFile(filePath, inputText.value, { baseDir: BaseDirectory.Download })
+    // await invoke('plugin:fs|write_file', {
+    //   path: filePath,
+    //   contents: inputText.value
+    // })
+    inputText.value = ''
+    // await readFile() // Optionally refresh content after write
+  } catch (e) {
+    errorMsg.value = e.message || String(e)
+  }
+}
+
+async function readFile() {
+  errorMsg.value = ''
+  try {
+    // Try custom Rust command first (for demo):
+    const content = await invoke('read_file_if_exists', { path: filePath })
+    fileContent.value = content
+  } catch (e) {
+    errorMsg.value = e.message || String(e)
+    fileContent.value = null
+  }
+}
+</script>
 
 <style scoped>
 .page-container {

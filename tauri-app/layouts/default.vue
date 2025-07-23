@@ -1,10 +1,10 @@
 <template>
     <main>
         <SideMenu />
-        <div>
+        <!-- <div>
             <h2>File Content</h2>
             <pre>{{ fileContent }}</pre>
-        </div>
+        </div> -->
         <NuxtPage />
     </main>
 </template>
@@ -31,7 +31,7 @@ invoke('read_file_if_exists', { path: filePath })
   .then((content) => {
     // content is the file data if it exists
     console.log("File content:", content);
-    fileContent.value = content;
+    // fileContent.value = content;
   })
   .catch((error) => {
     // error is the error message if file does not exist or cannot be read
